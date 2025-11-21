@@ -44,7 +44,8 @@ func ensureBackupDir() error {
 
 // CreateAutoBackup creates an automatic backup with a description
 func CreateAutoBackup(description string) error {
-	return createBackup(description)
+	_, err := createBackup(description)
+	return err
 }
 
 // CreateManualBackup creates a manual backup with a user-provided description
