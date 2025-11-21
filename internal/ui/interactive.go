@@ -209,7 +209,7 @@ func handleShowConfig() error {
 		return err
 	}
 
-	fmt.Println("\n" + colorCyan + colorBold + "=== Current Configuration ===" + colorReset + "\n")
+	fmt.Println("\n" + colorCyan + colorBold + "=== Current Configuration ===" + colorReset)
 
 	if cfg.UseFoundry {
 		printSuccess("Status: Azure Foundry ENABLED")
@@ -277,7 +277,7 @@ func handleRestoreBackup() error {
 	}
 
 	// Show list
-	fmt.Println("\n" + colorCyan + "=== Select Backup to Restore ===" + colorReset + "\n")
+	fmt.Println("\n" + colorCyan + "=== Select Backup to Restore ===" + colorReset)
 	for i, b := range backups {
 		fmt.Printf("[%d] %s - %s\n", i+1, b.Timestamp.Format("2006-01-02 15:04:05"), b.Description)
 	}
@@ -328,7 +328,7 @@ func handleRestoreBackup() error {
 }
 
 func handleCreateBackup() error {
-	fmt.Println("\n" + colorCyan + "=== Create Manual Backup ===" + colorReset + "\n")
+	fmt.Println("\n" + colorCyan + "=== Create Manual Backup ===" + colorReset)
 
 	description, err := readInput("Enter backup description: ")
 	if err != nil {

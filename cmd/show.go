@@ -27,7 +27,7 @@ Example:
 			return fmt.Errorf("failed to read configuration: %w", err)
 		}
 
-		fmt.Println("\n=== Current Claude Code Configuration ===\n")
+		fmt.Println("\n=== Current Claude Code Configuration ===")
 
 		if cfg.UseFoundry {
 			fmt.Println("Status: Azure Foundry ENABLED")
