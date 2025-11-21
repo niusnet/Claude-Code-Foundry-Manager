@@ -16,16 +16,16 @@ const (
 	markerEnd   = "# <<< Claude Foundry Manager - END <<<"
 )
 
-// getEnvVarUnix reads an environment variable from the current process environment
-func getEnvVarUnix(key string) (string, error) {
+// getEnvVar reads an environment variable from the current process environment
+func getEnvVar(key string) (string, error) {
 	// On Unix, we read from the profile files, not from the current environment
 	// because we need to persist changes across sessions
 	value := os.Getenv(key)
 	return value, nil
 }
 
-// setEnvVarUnix writes environment variables to shell profile files
-func setEnvVarUnix(key, value string) error {
+// setEnvVar writes environment variables to shell profile files
+func setEnvVar(key, value string) error {
 	// Get all variables to write them together
 	vars := getAllVarsFromProfile()
 	vars[key] = value
@@ -33,8 +33,8 @@ func setEnvVarUnix(key, value string) error {
 	return writeVarsToProfile(vars)
 }
 
-// deleteEnvVarUnix removes an environment variable from shell profile files
-func deleteEnvVarUnix(key string) error {
+// deleteEnvVar removes an environment variable from shell profile files
+func deleteEnvVar(key string) error {
 	// Get all variables except the one to delete
 	vars := getAllVarsFromProfile()
 	delete(vars, key)
@@ -208,4 +208,10 @@ func getCurrentShell() string {
 		}
 	}
 	return filepath.Base(shell)
+}
+
+// notifyEnvironmentChange does nothing on Unix systems (no system notification needed)
+func notifyEnvironmentChange() error {
+	// Unix systems don't need notification - changes take effect in new shell sessions
+	return nil
 }

@@ -25,8 +25,8 @@ var (
 	procSendMessage  = user32.NewProc("SendMessageTimeoutW")
 )
 
-// getEnvVarWindows reads an environment variable from the Windows registry
-func getEnvVarWindows(key string) (string, error) {
+// getEnvVar reads an environment variable from the Windows registry
+func getEnvVar(key string) (string, error) {
 	k, err := registry.OpenKey(registry.LOCAL_MACHINE, envRegPath, registry.QUERY_VALUE)
 	if err != nil {
 		return "", err
@@ -44,8 +44,8 @@ func getEnvVarWindows(key string) (string, error) {
 	return value, nil
 }
 
-// setEnvVarWindows writes an environment variable to the Windows registry
-func setEnvVarWindows(key, value string) error {
+// setEnvVar writes an environment variable to the Windows registry
+func setEnvVar(key, value string) error {
 	k, err := registry.OpenKey(registry.LOCAL_MACHINE, envRegPath, registry.SET_VALUE)
 	if err != nil {
 		return fmt.Errorf("failed to open registry key (requires admin privileges): %w", err)
@@ -60,8 +60,8 @@ func setEnvVarWindows(key, value string) error {
 	return nil
 }
 
-// deleteEnvVarWindows removes an environment variable from the Windows registry
-func deleteEnvVarWindows(key string) error {
+// deleteEnvVar removes an environment variable from the Windows registry
+func deleteEnvVar(key string) error {
 	k, err := registry.OpenKey(registry.LOCAL_MACHINE, envRegPath, registry.SET_VALUE)
 	if err != nil {
 		return fmt.Errorf("failed to open registry key (requires admin privileges): %w", err)
@@ -79,8 +79,8 @@ func deleteEnvVarWindows(key string) error {
 	return nil
 }
 
-// notifyEnvironmentChangeWindows broadcasts a message to all windows that environment has changed
-func notifyEnvironmentChangeWindows() error {
+// notifyEnvironmentChange broadcasts a message to all windows that environment has changed
+func notifyEnvironmentChange() error {
 	env, err := syscall.UTF16PtrFromString("Environment")
 	if err != nil {
 		return err

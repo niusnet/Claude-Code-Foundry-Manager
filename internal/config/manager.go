@@ -2,7 +2,6 @@ package config
 
 import (
 	"fmt"
-	"runtime"
 )
 
 // Environment variable names used by Claude Code
@@ -154,46 +153,11 @@ func SetAllVars(vars map[string]string) error {
 }
 
 // Platform-specific implementations are in separate files:
-// - manager_windows.go: Windows registry implementation
-// - manager_unix.go: Linux/macOS shell profile implementation
-
-// getEnvVar reads an environment variable from the system
-func getEnvVar(key string) (string, error) {
-	switch runtime.GOOS {
-	case "windows":
-		return getEnvVarWindows(key)
-	default:
-		return getEnvVarUnix(key)
-	}
-}
-
-// setEnvVar writes an environment variable to the system
-func setEnvVar(key, value string) error {
-	switch runtime.GOOS {
-	case "windows":
-		return setEnvVarWindows(key, value)
-	default:
-		return setEnvVarUnix(key, value)
-	}
-}
-
-// deleteEnvVar removes an environment variable from the system
-func deleteEnvVar(key string) error {
-	switch runtime.GOOS {
-	case "windows":
-		return deleteEnvVarWindows(key)
-	default:
-		return deleteEnvVarUnix(key)
-	}
-}
-
-// notifyEnvironmentChange notifies the system that environment variables have changed
-func notifyEnvironmentChange() error {
-	switch runtime.GOOS {
-	case "windows":
-		return notifyEnvironmentChangeWindows()
-	default:
-		// Unix systems don't need notification
-		return nil
-	}
-}
+// - manager_windows.go: Windows registry implementation (build tag: windows)
+// - manager_unix.go: Linux/macOS shell profile implementation (build tag: !windows)
+//
+// Each file implements these functions for their respective platforms:
+// - getEnvVar(key string) (string, error)
+// - setEnvVar(key, value string) error
+// - deleteEnvVar(key string) error
+// - notifyEnvironmentChange() error
