@@ -97,13 +97,42 @@ func showMenu() {
 func handleConfigure() error {
 	printInfo("\n=== Configure Azure Foundry ===\n")
 
-	resource, err := readInput("Enter Azure Foundry Resource name: ")
+	// Ask user which method they prefer
+	fmt.Println("Choose configuration method:")
+	fmt.Println("  [1] Provide resource name (auto-generates URL)")
+	fmt.Println("  [2] Provide full base URL")
+	fmt.Println()
+
+	choice, err := readInput("Enter your choice (1-2): ")
 	if err != nil {
 		return err
 	}
-	resource = strings.TrimSpace(resource)
-	if resource == "" {
-		return fmt.Errorf("resource name is required")
+	choice = strings.TrimSpace(choice)
+
+	var resource, baseURL string
+
+	if choice == "1" {
+		// Option 1: Resource name
+		resource, err = readInput("\nEnter Azure Foundry Resource name: ")
+		if err != nil {
+			return err
+		}
+		resource = strings.TrimSpace(resource)
+		if resource == "" {
+			return fmt.Errorf("resource name is required")
+		}
+	} else if choice == "2" {
+		// Option 2: Full base URL
+		baseURL, err = readInput("\nEnter full base URL (e.g., https://my-foundry.services.ai.azure.com): ")
+		if err != nil {
+			return err
+		}
+		baseURL = strings.TrimSpace(baseURL)
+		if baseURL == "" {
+			return fmt.Errorf("base URL is required")
+		}
+	} else {
+		return fmt.Errorf("invalid choice, please select 1 or 2")
 	}
 
 	apiKey, err := readInput("Enter API Key (leave empty for Entra ID): ")
@@ -129,7 +158,12 @@ func handleConfigure() error {
 
 	// Show summary
 	fmt.Println("\n" + colorYellow + "Configuration Summary:" + colorReset)
-	fmt.Printf("  Resource: %s\n", resource)
+	if resource != "" {
+		fmt.Printf("  Resource: %s\n", resource)
+		fmt.Printf("  Base URL: https://%s.services.ai.azure.com/models (auto-generated)\n", resource)
+	} else {
+		fmt.Printf("  Base URL: %s\n", baseURL)
+	}
 	if apiKey != "" {
 		fmt.Printf("  API Key: %s... (masked)\n", maskAPIKey(apiKey))
 	} else {
@@ -157,6 +191,7 @@ func handleConfigure() error {
 	// Apply configuration
 	cfg := &config.FoundryConfig{
 		Resource:    resource,
+		BaseURL:     baseURL,
 		APIKey:      apiKey,
 		SonnetModel: sonnetModel,
 		HaikuModel:  haikuModel,
@@ -220,8 +255,14 @@ func handleShowConfig() error {
 	// Always show environment variable values
 	fmt.Println("\n" + colorYellow + "Environment Variables:" + colorReset)
 	fmt.Printf("  CLAUDE_CODE_USE_FOUNDRY:        %s\n", formatBoolValue(cfg.UseFoundry))
-	fmt.Printf("  ANTHROPIC_FOUNDRY_RESOURCE:     %s\n", formatStringValue(cfg.Resource))
-	fmt.Printf("  ANTHROPIC_FOUNDRY_BASE_URL:     %s\n", formatStringValue(cfg.BaseURL))
+
+	if cfg.Resource != "" {
+		fmt.Printf("  ANTHROPIC_FOUNDRY_RESOURCE:     %s\n", formatStringValue(cfg.Resource))
+		fmt.Printf("  ANTHROPIC_FOUNDRY_BASE_URL:     %s (auto-generated)\n", formatStringValue(cfg.BaseURL))
+	} else {
+		fmt.Printf("  ANTHROPIC_FOUNDRY_RESOURCE:     %s\n", formatStringValue(""))
+		fmt.Printf("  ANTHROPIC_FOUNDRY_BASE_URL:     %s\n", formatStringValue(cfg.BaseURL))
+	}
 
 	if cfg.APIKey != "" {
 		fmt.Printf("  ANTHROPIC_FOUNDRY_API_KEY:      %s... (masked)\n", maskAPIKey(cfg.APIKey))

@@ -48,8 +48,11 @@ claude-foundry-manager
 ### CLI Mode
 
 ```bash
-# Configure Azure Foundry
+# Configure Azure Foundry (with resource name)
 claude-foundry-manager configure --resource=my-foundry --api-key=sk-xxx
+
+# Or configure with full base URL
+claude-foundry-manager configure --base-url=https://my-foundry.services.ai.azure.com --api-key=sk-xxx
 
 # View current config
 claude-foundry-manager show
@@ -78,14 +81,29 @@ claude-foundry-manager backup restore <filename>
 
 ### Configure Options
 
+**Choose one of these two configuration methods:**
+
+**Option 1: Using resource name (recommended)**
 ```bash
 claude-foundry-manager configure \
-  --resource=<azure-resource>      # Required: Azure Foundry resource name
+  --resource=<azure-resource>      # Azure Foundry resource name (auto-generates URL)
   --api-key=<key>                  # Optional: API key (uses Entra ID if omitted)
   --sonnet-model=<deployment>      # Optional: Sonnet deployment (default: claude-sonnet-4-5)
   --haiku-model=<deployment>       # Optional: Haiku deployment (default: claude-haiku-4-5)
   --opus-model=<deployment>        # Optional: Opus deployment (default: claude-opus-4-1)
 ```
+
+**Option 2: Using full base URL**
+```bash
+claude-foundry-manager configure \
+  --base-url=<full-url>            # Full base URL (e.g., https://my-foundry.services.ai.azure.com)
+  --api-key=<key>                  # Optional: API key (uses Entra ID if omitted)
+  --sonnet-model=<deployment>      # Optional: Sonnet deployment (default: claude-sonnet-4-5)
+  --haiku-model=<deployment>       # Optional: Haiku deployment (default: claude-haiku-4-5)
+  --opus-model=<deployment>        # Optional: Opus deployment (default: claude-opus-4-1)
+```
+
+**Note:** `--resource` and `--base-url` are mutually exclusive. Choose one based on your preference.
 
 ---
 
@@ -94,12 +112,16 @@ claude-foundry-manager configure \
 Manages these Claude Code environment variables:
 
 - `CLAUDE_CODE_USE_FOUNDRY` - Enable/disable Azure Foundry
-- `ANTHROPIC_FOUNDRY_RESOURCE` - Azure resource name
-- `ANTHROPIC_FOUNDRY_BASE_URL` - Base URL (auto-generated)
-- `ANTHROPIC_FOUNDRY_API_KEY` - API key (optional)
+- `ANTHROPIC_FOUNDRY_RESOURCE` - Azure resource name (set when using `--resource`)
+- `ANTHROPIC_FOUNDRY_BASE_URL` - Base URL (auto-generated or custom)
+- `ANTHROPIC_FOUNDRY_API_KEY` - API key (optional, uses Entra ID if not set)
 - `ANTHROPIC_DEFAULT_SONNET_MODEL` - Sonnet deployment
 - `ANTHROPIC_DEFAULT_HAIKU_MODEL` - Haiku deployment
 - `ANTHROPIC_DEFAULT_OPUS_MODEL` - Opus deployment
+
+**Note:** You can configure using either:
+- `ANTHROPIC_FOUNDRY_RESOURCE` - Provide resource name, URL is auto-generated
+- `ANTHROPIC_FOUNDRY_BASE_URL` - Provide full base URL directly
 
 ---
 

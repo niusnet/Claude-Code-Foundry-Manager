@@ -17,7 +17,8 @@ const (
 
 // FoundryConfig represents the Azure Foundry configuration
 type FoundryConfig struct {
-	Resource    string
+	Resource    string // Optional - provide either Resource OR BaseURL
+	BaseURL     string // Optional - provide either Resource OR BaseURL
 	APIKey      string // Optional - if empty, use Entra ID
 	SonnetModel string
 	HaikuModel  string
@@ -37,15 +38,23 @@ type CurrentConfig struct {
 
 // ApplyFoundryConfig applies Azure Foundry configuration to the system
 func ApplyFoundryConfig(cfg *FoundryConfig) error {
-	baseURL := fmt.Sprintf("https://%s.services.ai.azure.com/models", cfg.Resource)
-
 	vars := map[string]string{
-		EnvUseFoundry:      "true",
-		EnvFoundryResource: cfg.Resource,
-		EnvFoundryBaseURL:  baseURL,
-		EnvDefaultSonnet:   cfg.SonnetModel,
-		EnvDefaultHaiku:    cfg.HaikuModel,
-		EnvDefaultOpus:     cfg.OpusModel,
+		EnvUseFoundry:    "true",
+		EnvDefaultSonnet: cfg.SonnetModel,
+		EnvDefaultHaiku:  cfg.HaikuModel,
+		EnvDefaultOpus:   cfg.OpusModel,
+	}
+
+	// Set either resource or base URL (user chooses one)
+	if cfg.Resource != "" {
+		// User provided resource name - auto-generate base URL
+		baseURL := fmt.Sprintf("https://%s.services.ai.azure.com/models", cfg.Resource)
+		vars[EnvFoundryResource] = cfg.Resource
+		vars[EnvFoundryBaseURL] = baseURL
+	} else if cfg.BaseURL != "" {
+		// User provided full base URL directly
+		vars[EnvFoundryBaseURL] = cfg.BaseURL
+		// Don't set ANTHROPIC_FOUNDRY_RESOURCE when using custom base URL
 	}
 
 	// Only set API key if provided (otherwise use Entra ID)

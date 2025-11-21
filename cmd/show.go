@@ -38,8 +38,14 @@ Example:
 		// Always show environment variable values
 		fmt.Println("\nEnvironment Variables:")
 		fmt.Printf("  CLAUDE_CODE_USE_FOUNDRY:        %s\n", formatValue(cfg.UseFoundry))
-		fmt.Printf("  ANTHROPIC_FOUNDRY_RESOURCE:     %s\n", formatEnvValue(cfg.Resource))
-		fmt.Printf("  ANTHROPIC_FOUNDRY_BASE_URL:     %s\n", formatEnvValue(cfg.BaseURL))
+
+		if cfg.Resource != "" {
+			fmt.Printf("  ANTHROPIC_FOUNDRY_RESOURCE:     %s\n", formatEnvValue(cfg.Resource))
+			fmt.Printf("  ANTHROPIC_FOUNDRY_BASE_URL:     %s (auto-generated)\n", formatEnvValue(cfg.BaseURL))
+		} else {
+			fmt.Printf("  ANTHROPIC_FOUNDRY_RESOURCE:     %s\n", formatEnvValue(""))
+			fmt.Printf("  ANTHROPIC_FOUNDRY_BASE_URL:     %s\n", formatEnvValue(cfg.BaseURL))
+		}
 
 		if cfg.APIKey != "" {
 			fmt.Printf("  ANTHROPIC_FOUNDRY_API_KEY:      %s... (masked)\n", maskAPIKey(cfg.APIKey))
