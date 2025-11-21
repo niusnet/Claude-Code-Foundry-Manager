@@ -4,7 +4,10 @@
       "Bash(git init:*)",
       "Bash(git add:*)",
       "Bash(git commit -m \"$(cat <<''EOF''\nInitial commit with Python implementation\n\nThis commit includes the original Windows-only Python implementation as reference:\n- claude_foundry_manager.py: Interactive menu-based manager\n- claude_foundry_quick.py: CLI quick configuration tool\n- run-manager.bat: Windows launcher with auto-elevation\n- Documentation files (START-HERE.md, README-Python.md, QUICK-START.md)\n\nNext step: Implement cross-platform Go version with native binaries.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
-      "Bash(go mod init:*)"
+      "Bash(go mod init:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nImplement cross-platform Go version with native binaries\n\nThis commit introduces a complete rewrite in Go, providing:\n\nFeatures:\n- Cross-platform support: Windows, Linux, macOS\n- Single binary distribution (no dependencies)\n- Two operation modes: interactive menu + CLI commands\n- Automatic backup system with JSON storage\n- Platform-specific env var handling (registry on Windows, shell profiles on Unix)\n\nArchitecture:\n- cmd/: Cobra-based CLI commands (configure, rollback, show, backup)\n- internal/config/: Multi-platform environment variable management\n- internal/backup/: JSON-based backup and restore system\n- internal/ui/: Interactive menu with ANSI colors\n- main.go: Entry point\n\nBuild system:\n- GitHub Actions workflow for automated releases\n- Cross-compilation for 6 platform targets (Windows/Linux/macOS on amd64/arm64)\n- Produces optimized static binaries (~5-10 MB)\n\nDocumentation:\n- Comprehensive README.md with installation and usage\n- Migration guide from Python version\n- Platform-specific troubleshooting\n\nCompatibility:\n- 100% functional parity with Python version\n- Compatible with existing backup files\n- Same environment variables and behavior\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(go version:*)",
+      "Bash(git commit:*)"
     ],
     "deny": [],
     "ask": []
