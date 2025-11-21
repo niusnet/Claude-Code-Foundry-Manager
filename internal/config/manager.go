@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"strings"
 )
 
 // Environment variable names used by Claude Code
@@ -109,7 +110,7 @@ func GetCurrentConfig() (*CurrentConfig, error) {
 	cfg := &CurrentConfig{}
 
 	useFoundry, _ := getEnvVar(EnvUseFoundry)
-	cfg.UseFoundry = useFoundry == "true"
+	cfg.UseFoundry = isTruthy(useFoundry)
 
 	cfg.Resource, _ = getEnvVar(EnvFoundryResource)
 	cfg.BaseURL, _ = getEnvVar(EnvFoundryBaseURL)
@@ -119,6 +120,13 @@ func GetCurrentConfig() (*CurrentConfig, error) {
 	cfg.OpusModel, _ = getEnvVar(EnvDefaultOpus)
 
 	return cfg, nil
+}
+
+// isTruthy checks if a string value represents a true/enabled state
+// Accepts: "true", "1", "yes", "on", "enabled" (case-insensitive)
+func isTruthy(value string) bool {
+	value = strings.ToLower(strings.TrimSpace(value))
+	return value == "true" || value == "1" || value == "yes" || value == "on" || value == "enabled"
 }
 
 // GetAllVars returns all environment variable values as a map

@@ -185,3 +185,45 @@ func TestSetAllVarsWithEmptyMap(t *testing.T) {
 	// We just verify it doesn't panic
 	_ = err
 }
+
+func TestIsTruthy(t *testing.T) {
+	tests := []struct {
+		name     string
+		value    string
+		expected bool
+	}{
+		// True values
+		{"lowercase true", "true", true},
+		{"uppercase TRUE", "TRUE", true},
+		{"mixed case True", "True", true},
+		{"number 1", "1", true},
+		{"lowercase yes", "yes", true},
+		{"uppercase YES", "YES", true},
+		{"lowercase on", "on", true},
+		{"uppercase ON", "ON", true},
+		{"lowercase enabled", "enabled", true},
+		{"uppercase ENABLED", "ENABLED", true},
+		{"with spaces", "  true  ", true},
+		{"with tabs", "\ttrue\t", true},
+
+		// False values
+		{"lowercase false", "false", false},
+		{"uppercase FALSE", "FALSE", false},
+		{"number 0", "0", false},
+		{"lowercase no", "no", false},
+		{"lowercase off", "off", false},
+		{"empty string", "", false},
+		{"just spaces", "   ", false},
+		{"random text", "random", false},
+		{"number 2", "2", false},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result := isTruthy(tt.value)
+			if result != tt.expected {
+				t.Errorf("isTruthy(%q) = %v, expected %v", tt.value, result, tt.expected)
+			}
+		})
+	}
+}
