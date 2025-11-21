@@ -213,22 +213,29 @@ func handleShowConfig() error {
 
 	if cfg.UseFoundry {
 		printSuccess("Status: Azure Foundry ENABLED")
-		fmt.Printf("\n  Resource:    %s\n", cfg.Resource)
-		fmt.Printf("  Base URL:    %s\n", cfg.BaseURL)
-
-		if cfg.APIKey != "" {
-			fmt.Printf("  API Key:     %s... (masked)\n", maskAPIKey(cfg.APIKey))
-		} else {
-			fmt.Println("  API Key:     (using Entra ID)")
-		}
-
-		fmt.Println("\n  Model Deployments:")
-		fmt.Printf("    Sonnet: %s\n", cfg.SonnetModel)
-		fmt.Printf("    Haiku:  %s\n", cfg.HaikuModel)
-		fmt.Printf("    Opus:   %s\n", cfg.OpusModel)
 	} else {
 		printInfo("Status: Azure Foundry DISABLED")
-		fmt.Println("\nUsing default Anthropic direct API configuration.")
+	}
+
+	// Always show environment variable values
+	fmt.Println("\n" + colorYellow + "Environment Variables:" + colorReset)
+	fmt.Printf("  CLAUDE_CODE_USE_FOUNDRY:        %s\n", formatBoolValue(cfg.UseFoundry))
+	fmt.Printf("  ANTHROPIC_FOUNDRY_RESOURCE:     %s\n", formatStringValue(cfg.Resource))
+	fmt.Printf("  ANTHROPIC_FOUNDRY_BASE_URL:     %s\n", formatStringValue(cfg.BaseURL))
+
+	if cfg.APIKey != "" {
+		fmt.Printf("  ANTHROPIC_FOUNDRY_API_KEY:      %s... (masked)\n", maskAPIKey(cfg.APIKey))
+	} else {
+		fmt.Printf("  ANTHROPIC_FOUNDRY_API_KEY:      %s\n", formatStringValue(""))
+	}
+
+	fmt.Println("\n" + colorYellow + "Model Deployments:" + colorReset)
+	fmt.Printf("  ANTHROPIC_DEFAULT_SONNET_MODEL: %s\n", formatStringValue(cfg.SonnetModel))
+	fmt.Printf("  ANTHROPIC_DEFAULT_HAIKU_MODEL:  %s\n", formatStringValue(cfg.HaikuModel))
+	fmt.Printf("  ANTHROPIC_DEFAULT_OPUS_MODEL:   %s\n", formatStringValue(cfg.OpusModel))
+
+	if !cfg.UseFoundry {
+		fmt.Println("\n" + colorCyan + "Note: Using default Anthropic direct API configuration." + colorReset)
 	}
 
 	fmt.Println()
@@ -378,6 +385,20 @@ func maskAPIKey(key string) string {
 		return "***"
 	}
 	return key[:8] + "***"
+}
+
+func formatBoolValue(value bool) string {
+	if value {
+		return colorGreen + "true" + colorReset
+	}
+	return colorYellow + "false" + colorReset
+}
+
+func formatStringValue(value string) string {
+	if value == "" {
+		return colorYellow + "(not set)" + colorReset
+	}
+	return colorGreen + value + colorReset
 }
 
 func printSuccess(msg string) {

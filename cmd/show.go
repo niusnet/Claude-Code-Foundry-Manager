@@ -31,22 +31,29 @@ Example:
 
 		if cfg.UseFoundry {
 			fmt.Println("Status: Azure Foundry ENABLED")
-			fmt.Printf("Resource: %s\n", cfg.Resource)
-			fmt.Printf("Base URL: %s\n", cfg.BaseURL)
-
-			if cfg.APIKey != "" {
-				fmt.Printf("API Key: %s... (masked)\n", maskAPIKey(cfg.APIKey))
-			} else {
-				fmt.Println("API Key: Not set (using Entra ID)")
-			}
-
-			fmt.Printf("\nModel Deployments:\n")
-			fmt.Printf("  Sonnet: %s\n", cfg.SonnetModel)
-			fmt.Printf("  Haiku:  %s\n", cfg.HaikuModel)
-			fmt.Printf("  Opus:   %s\n", cfg.OpusModel)
 		} else {
 			fmt.Println("Status: Azure Foundry DISABLED")
-			fmt.Println("\nUsing default Anthropic direct API configuration.")
+		}
+
+		// Always show environment variable values
+		fmt.Println("\nEnvironment Variables:")
+		fmt.Printf("  CLAUDE_CODE_USE_FOUNDRY:        %s\n", formatValue(cfg.UseFoundry))
+		fmt.Printf("  ANTHROPIC_FOUNDRY_RESOURCE:     %s\n", formatEnvValue(cfg.Resource))
+		fmt.Printf("  ANTHROPIC_FOUNDRY_BASE_URL:     %s\n", formatEnvValue(cfg.BaseURL))
+
+		if cfg.APIKey != "" {
+			fmt.Printf("  ANTHROPIC_FOUNDRY_API_KEY:      %s... (masked)\n", maskAPIKey(cfg.APIKey))
+		} else {
+			fmt.Printf("  ANTHROPIC_FOUNDRY_API_KEY:      %s\n", formatEnvValue(""))
+		}
+
+		fmt.Printf("\nModel Deployments:\n")
+		fmt.Printf("  ANTHROPIC_DEFAULT_SONNET_MODEL: %s\n", formatEnvValue(cfg.SonnetModel))
+		fmt.Printf("  ANTHROPIC_DEFAULT_HAIKU_MODEL:  %s\n", formatEnvValue(cfg.HaikuModel))
+		fmt.Printf("  ANTHROPIC_DEFAULT_OPUS_MODEL:   %s\n", formatEnvValue(cfg.OpusModel))
+
+		if !cfg.UseFoundry {
+			fmt.Println("\nNote: Using default Anthropic direct API configuration.")
 		}
 
 		fmt.Println()
@@ -59,6 +66,20 @@ func maskAPIKey(key string) string {
 		return "***"
 	}
 	return key[:8] + "***"
+}
+
+func formatValue(value bool) string {
+	if value {
+		return "true"
+	}
+	return "false"
+}
+
+func formatEnvValue(value string) string {
+	if value == "" {
+		return "(not set)"
+	}
+	return value
 }
 
 func init() {
