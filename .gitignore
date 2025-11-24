@@ -22,6 +22,9 @@ go.work
 # Backups directory (user-specific)
 .claude-code-backups/
 
+# Claude Code configuration (user-specific)
+.claude/
+
 # IDE specific files
 .vscode/
 .idea/
