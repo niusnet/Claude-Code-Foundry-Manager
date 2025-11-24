@@ -99,8 +99,8 @@ func handleConfigure() error {
 
 	// Ask user which method they prefer
 	fmt.Println("Choose configuration method:")
-	fmt.Println("  [1] Provide resource name (auto-generates URL)")
-	fmt.Println("  [2] Provide full base URL")
+	fmt.Println("  [1] Provide resource name only (ANTHROPIC_FOUNDRY_RESOURCE)")
+	fmt.Println("  [2] Provide full base URL (ANTHROPIC_FOUNDRY_BASE_URL)")
 	fmt.Println()
 
 	choice, err := readInput("Enter your choice (1-2): ")
@@ -112,7 +112,7 @@ func handleConfigure() error {
 	var resource, baseURL string
 
 	if choice == "1" {
-		// Option 1: Resource name
+		// Option 1: Resource name only (no URL generation)
 		resource, err = readInput("\nEnter Azure Foundry Resource name: ")
 		if err != nil {
 			return err
@@ -123,7 +123,7 @@ func handleConfigure() error {
 		}
 	} else if choice == "2" {
 		// Option 2: Full base URL
-		baseURL, err = readInput("\nEnter full base URL (e.g., https://my-foundry.services.ai.azure.com): ")
+		baseURL, err = readInput("\nEnter full base URL (e.g., https://my-foundry.services.ai.azure.com/models): ")
 		if err != nil {
 			return err
 		}
@@ -159,10 +159,11 @@ func handleConfigure() error {
 	// Show summary
 	fmt.Println("\n" + colorYellow + "Configuration Summary:" + colorReset)
 	if resource != "" {
-		fmt.Printf("  Resource: %s\n", resource)
-		fmt.Printf("  Base URL: https://%s.services.ai.azure.com/models (auto-generated)\n", resource)
+		fmt.Printf("  Resource Name: %s\n", resource)
+		fmt.Println("  (Will set ANTHROPIC_FOUNDRY_RESOURCE only)")
 	} else {
 		fmt.Printf("  Base URL: %s\n", baseURL)
+		fmt.Println("  (Will set ANTHROPIC_FOUNDRY_BASE_URL only)")
 	}
 	if apiKey != "" {
 		fmt.Printf("  API Key: %s... (masked)\n", maskAPIKey(apiKey))
@@ -255,14 +256,8 @@ func handleShowConfig() error {
 	// Always show environment variable values
 	fmt.Println("\n" + colorYellow + "Environment Variables:" + colorReset)
 	fmt.Printf("  CLAUDE_CODE_USE_FOUNDRY:        %s\n", formatBoolValue(cfg.UseFoundry))
-
-	if cfg.Resource != "" {
-		fmt.Printf("  ANTHROPIC_FOUNDRY_RESOURCE:     %s\n", formatStringValue(cfg.Resource))
-		fmt.Printf("  ANTHROPIC_FOUNDRY_BASE_URL:     %s (auto-generated)\n", formatStringValue(cfg.BaseURL))
-	} else {
-		fmt.Printf("  ANTHROPIC_FOUNDRY_RESOURCE:     %s\n", formatStringValue(""))
-		fmt.Printf("  ANTHROPIC_FOUNDRY_BASE_URL:     %s\n", formatStringValue(cfg.BaseURL))
-	}
+	fmt.Printf("  ANTHROPIC_FOUNDRY_RESOURCE:     %s\n", formatStringValue(cfg.Resource))
+	fmt.Printf("  ANTHROPIC_FOUNDRY_BASE_URL:     %s\n", formatStringValue(cfg.BaseURL))
 
 	if cfg.APIKey != "" {
 		fmt.Printf("  ANTHROPIC_FOUNDRY_API_KEY:      %s... (masked)\n", maskAPIKey(cfg.APIKey))

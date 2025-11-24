@@ -48,14 +48,13 @@ func ApplyFoundryConfig(cfg *FoundryConfig) error {
 
 	// Set either resource or base URL (user chooses one)
 	if cfg.Resource != "" {
-		// User provided resource name - auto-generate base URL
-		baseURL := fmt.Sprintf("https://%s.services.ai.azure.com/models", cfg.Resource)
+		// User provided resource name only - DO NOT generate URL
+		// Only set ANTHROPIC_FOUNDRY_RESOURCE
 		vars[EnvFoundryResource] = cfg.Resource
-		vars[EnvFoundryBaseURL] = baseURL
 	} else if cfg.BaseURL != "" {
 		// User provided full base URL directly
+		// Only set ANTHROPIC_FOUNDRY_BASE_URL
 		vars[EnvFoundryBaseURL] = cfg.BaseURL
-		// Don't set ANTHROPIC_FOUNDRY_RESOURCE when using custom base URL
 	}
 
 	// Only set API key if provided (otherwise use Entra ID)
