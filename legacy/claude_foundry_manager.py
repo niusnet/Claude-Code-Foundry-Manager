@@ -231,8 +231,8 @@ def configure_azure_foundry():
     haiku_model = input(f"{Colors.BOLD}Haiku Model (default: claude-haiku-4-5): {Colors.ENDC}").strip()
     haiku_model = haiku_model or 'claude-haiku-4-5'
     
-    opus_model = input(f"{Colors.BOLD}Opus Model (default: claude-opus-4-1): {Colors.ENDC}").strip()
-    opus_model = opus_model or 'claude-opus-4-1'
+    opus_model = input(f"{Colors.BOLD}Opus Model (default: claude-opus-4-5): {Colors.ENDC}").strip()
+    opus_model = opus_model or 'claude-opus-4-5'
     
     # Confirmación
     print()

@@ -151,7 +151,7 @@ func handleConfigure() error {
 		return err
 	}
 
-	opusModel, err := readInputWithDefault("Opus model deployment name", "claude-opus-4-1")
+	opusModel, err := readInputWithDefault("Opus model deployment name", "claude-opus-4-5")
 	if err != nil {
 		return err
 	}

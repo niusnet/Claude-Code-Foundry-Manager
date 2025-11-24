@@ -155,7 +155,7 @@ Ejemplos:
     parser.add_argument('--api-key', help='API Key de Azure (opcional, usa Entra ID si no se proporciona)')
     parser.add_argument('--sonnet-model', default='claude-sonnet-4-5', help='Deployment de Sonnet (default: claude-sonnet-4-5)')
     parser.add_argument('--haiku-model', default='claude-haiku-4-5', help='Deployment de Haiku (default: claude-haiku-4-5)')
-    parser.add_argument('--opus-model', default='claude-opus-4-1', help='Deployment de Opus (default: claude-opus-4-1)')
+    parser.add_argument('--opus-model', default='claude-opus-4-5', help='Deployment de Opus (default: claude-opus-4-5)')
     parser.add_argument('--rollback', action='store_true', help='Hacer rollback a configuración default')
     
     args = parser.parse_args()

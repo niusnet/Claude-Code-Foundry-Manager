@@ -58,7 +58,7 @@ Examples:
 			haikuModel = "claude-haiku-4-5"
 		}
 		if opusModel == "" {
-			opusModel = "claude-opus-4-1"
+			opusModel = "claude-opus-4-5"
 		}
 
 		cfg := &config.FoundryConfig{
@@ -95,7 +95,7 @@ func init() {
 	configureCmd.Flags().StringVar(&apiKey, "api-key", "", "Azure Foundry API key (optional, uses Entra ID if not provided)")
 	configureCmd.Flags().StringVar(&sonnetModel, "sonnet-model", "", "Sonnet model deployment name (default: claude-sonnet-4-5)")
 	configureCmd.Flags().StringVar(&haikuModel, "haiku-model", "", "Haiku model deployment name (default: claude-haiku-4-5)")
-	configureCmd.Flags().StringVar(&opusModel, "opus-model", "", "Opus model deployment name (default: claude-opus-4-1)")
+	configureCmd.Flags().StringVar(&opusModel, "opus-model", "", "Opus model deployment name (default: claude-opus-4-5)")
 
 	configureCmd.MarkFlagsOneRequired("resource", "base-url")
 	configureCmd.MarkFlagsMutuallyExclusive("resource", "base-url")

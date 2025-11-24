@@ -90,7 +90,7 @@ claude-foundry-manager configure \
   --api-key=<key>                  # Optional: API key (uses Entra ID if omitted)
   --sonnet-model=<deployment>      # Optional: Sonnet deployment (default: claude-sonnet-4-5)
   --haiku-model=<deployment>       # Optional: Haiku deployment (default: claude-haiku-4-5)
-  --opus-model=<deployment>        # Optional: Opus deployment (default: claude-opus-4-1)
+  --opus-model=<deployment>        # Optional: Opus deployment (default: claude-opus-4-5)
 ```
 
 **Option 2: Using full base URL**
@@ -100,7 +100,7 @@ claude-foundry-manager configure \
   --api-key=<key>                  # Optional: API key (uses Entra ID if omitted)
   --sonnet-model=<deployment>      # Optional: Sonnet deployment (default: claude-sonnet-4-5)
   --haiku-model=<deployment>       # Optional: Haiku deployment (default: claude-haiku-4-5)
-  --opus-model=<deployment>        # Optional: Opus deployment (default: claude-opus-4-1)
+  --opus-model=<deployment>        # Optional: Opus deployment (default: claude-opus-4-5)
 ```
 
 **Note:** `--resource` and `--base-url` are mutually exclusive. Choose one based on your preference.

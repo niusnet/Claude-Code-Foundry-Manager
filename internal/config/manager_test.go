@@ -10,7 +10,7 @@ func TestFoundryConfigStruct(t *testing.T) {
 		APIKey:      "test-api-key",
 		SonnetModel: "claude-sonnet-4-5",
 		HaikuModel:  "claude-haiku-4-5",
-		OpusModel:   "claude-opus-4-1",
+		OpusModel:   "claude-opus-4-5",
 	}
 
 	if cfg.Resource != "test-resource" {
@@ -34,7 +34,7 @@ func TestCurrentConfigStruct(t *testing.T) {
 		APIKey:      "test-key",
 		SonnetModel: "claude-sonnet-4-5",
 		HaikuModel:  "claude-haiku-4-5",
-		OpusModel:   "claude-opus-4-1",
+		OpusModel:   "claude-opus-4-5",
 	}
 
 	if !cfg.UseFoundry {
@@ -126,7 +126,7 @@ func TestFoundryConfigWithEmptyAPIKey(t *testing.T) {
 		APIKey:      "", // Empty = use Entra ID
 		SonnetModel: "claude-sonnet-4-5",
 		HaikuModel:  "claude-haiku-4-5",
-		OpusModel:   "claude-opus-4-1",
+		OpusModel:   "claude-opus-4-5",
 	}
 
 	if cfg.APIKey != "" {
@@ -144,7 +144,7 @@ func TestFoundryConfigDefaults(t *testing.T) {
 		Resource:    "test-resource",
 		SonnetModel: "claude-sonnet-4-5",
 		HaikuModel:  "claude-haiku-4-5",
-		OpusModel:   "claude-opus-4-1",
+		OpusModel:   "claude-opus-4-5",
 	}
 
 	if cfg.SonnetModel == "" {
